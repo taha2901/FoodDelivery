@@ -23,7 +23,7 @@ For detailed guidance on Flutter development, visit the [Flutter documentation](
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/food_delivery.git
+   git clone https://github.com/taha2901/FoodDelivery.git
    ```
 
 2. Navigate to the project directory:
