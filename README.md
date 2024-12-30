@@ -71,13 +71,6 @@ The project follows the **Clean Architecture** structure, ensuring separation of
 ![Screenshot_1735563756](https://github.com/user-attachments/assets/e13df34b-a00f-4e22-8edd-e3596ee43a06)
 
 
-## 🤝 Contributing
-
-Contributions are welcome! If you find a bug or want to propose a new feature, feel free to submit an issue or a pull request.
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
