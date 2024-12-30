@@ -63,8 +63,13 @@ The project follows the **Clean Architecture** structure, ensuring separation of
 - **Logging**: Pretty Dio Logger
 
 ## 📸 Screenshots
+![Screenshot_1735563716](https://github.com/user-attachments/assets/bd2ed142-9801-4089-ac2b-c8dc9313375c)
+![Screenshot_1735563296](https://github.com/user-attachments/assets/13b9db1c-b351-42dd-bc20-a61e74327304)
+![Screenshot_1735563292](https://github.com/user-attachments/assets/0ed62efb-bf82-4995-ac91-877c1362035f)
+![Screenshot_1735563280](https://github.com/user-attachments/assets/dfbf096a-c697-47e5-a6e1-05ad80ee474f)
+![Screenshot_1735563275](https://github.com/user-attachments/assets/cac467ae-2acd-4706-867f-7496182ba692)
+![Screenshot_1735563756](https://github.com/user-attachments/assets/e13df34b-a00f-4e22-8edd-e3596ee43a06)
 
-*Add screenshots here to showcase your app's design and features.*
 
 ## 🤝 Contributing
 
