@@ -7,5 +7,5 @@ class AppAssets {
   static const String pizzaIcon = 'assets/images/categories/pizza.png';
   static const String burgerBanner = 'assets/images/classic_burger.jpg';
   //account
-  static const String profilePhoto = 'assets/images/tarek.jpeg';
+  static const String profilePhoto = 'assets/images/classic_burger.jpg';
 }

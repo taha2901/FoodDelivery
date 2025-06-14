@@ -47,6 +47,16 @@ dependencies:
   freezed: ^2.5.7
   json_serializable: ^6.9.0
   retrofit_generator: ^9.1.5
+  firebase_core: ^3.14.0
+  firebase_auth: ^5.6.0
+  cloud_firestore: ^5.6.9
+  flutter_svg: ^2.1.0
+  persistent_bottom_nav_bar: ^6.2.1
+  cached_network_image: ^3.4.1
+  flutter_animate: ^4.5.2
+  iconsax: ^0.0.8
+  shimmer: ^3.0.0
+  flutter_dash: ^1.0.0
 
 dev_dependencies:
   flutter_test:

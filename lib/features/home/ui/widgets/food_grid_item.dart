@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:food_delivery/features/home/data/models/food_item.dart';
-import 'package:food_delivery/features/home/ui/widgets/favourite_butons.dart';
 
 class FoodGridItem extends StatelessWidget {
   final int foodIndex;
-  final List<FoodItem> filteredFood;
+  final List<FoodItemModel> filteredFood;
   const FoodGridItem({
     super.key,
     required this.foodIndex,
@@ -13,7 +12,7 @@ class FoodGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final targettedIndex = food.indexOf(filteredFood[foodIndex]);
+    // final targettedIndex = food.indexOf(filteredFood[foodIndex]);
     final size = MediaQuery.of(context).size;
     final textScaler = MediaQuery.textScalerOf(context);
     return Container(
@@ -33,14 +32,14 @@ class FoodGridItem extends StatelessWidget {
                     filteredFood[foodIndex].imgUrl,
                     height: constraints.maxHeight * 0.55,
                   ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: FavoriteButton(
-                      height: constraints.maxHeight * 0.1,
-                      width: constraints.maxWidth * 0.1,
-                      foodIndex: targettedIndex,
-                    ),
-                  ),
+                  // Align(
+                  //   alignment: Alignment.topRight,
+                  //   child: FavoriteButton(
+                  //     height: constraints.maxHeight * 0.1,
+                  //     width: constraints.maxWidth * 0.1,
+                  //     foodIndex: targettedIndex,
+                  //   ),
+                  // ),
                 ],
               ),
               SizedBox(height: constraints.maxHeight * 0.05),
