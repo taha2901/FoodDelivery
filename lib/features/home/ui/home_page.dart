@@ -6,7 +6,6 @@ import 'package:food_delivery/features/home/data/models/category_item.dart';
 import 'package:food_delivery/features/home/data/models/food_item.dart';
 import 'package:food_delivery/features/home/data/models/ui_models/food_details_args.dart';
 import 'package:food_delivery/features/home/logic/home/home_cubit.dart';
-import 'package:food_delivery/features/home/ui/food_details_page.dart';
 import 'package:food_delivery/features/home/ui/widgets/food_grid_item.dart';
 import 'package:shimmer/shimmer.dart';
 
