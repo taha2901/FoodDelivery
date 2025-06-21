@@ -50,4 +50,4 @@ class AddToCartModel {
   }
 }
 
-List<AddToCartModel> dummyCart = [];
+// List<AddToCartModel> dummyCart = [];

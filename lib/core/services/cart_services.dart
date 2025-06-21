@@ -5,6 +5,7 @@ import 'package:food_delivery/features/cart/data/add_to_cart.dart';
 abstract class CartServices {
   Future<List<AddToCartModel>> fetchCartItems(String userId);
   Future<void> setCartItem(String userId, AddToCartModel cartItem);
+  Future<void> deleteCartItem(String userId, String cartItemId);
 }
 
 class CartServicesImp implements CartServices {
@@ -21,5 +22,12 @@ class CartServicesImp implements CartServices {
   Future<void> setCartItem(String userId, AddToCartModel cartItem) async {
     await fireStoreServices.setData(
         path: ApiPaths.cartItem(userId, cartItem.id), data: cartItem.toMap());
+  }
+
+  @override
+  Future<void> deleteCartItem(String userId, String cartItemId) async {
+    await fireStoreServices.deleteData(
+      path: ApiPaths.cartItem(userId, cartItemId),
+    );
   }
 }

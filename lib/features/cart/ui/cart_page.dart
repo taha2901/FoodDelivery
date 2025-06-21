@@ -1,173 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_dash/flutter_dash.dart';
-import 'package:food_delivery/core/routings/routers.dart';
-import 'package:food_delivery/core/utilities/app_colors.dart';
 import 'package:food_delivery/features/cart/logic/cart/cart_cubit.dart';
-import 'package:food_delivery/features/cart/ui/widget/cart_item.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   @override
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = CartCubit();
-        cubit.getCartItems();
-        return cubit;
-      },
-      child: Builder(builder: (context) {
-        final cubit = BlocProvider.of<CartCubit>(context);
-        return BlocBuilder<CartCubit, CartState>(
-          bloc: cubit,
-          buildWhen: (previous, current) =>
-              current is CartLoaded ||
-              current is CartLoading ||
-              current is CartError ||
-              current is CartError,
-          builder: (context, state) {
-            if (state is CartLoading) {
-              return const Center(
-                child: CircularProgressIndicator.adaptive(),
-              );
-            } else if (state is CartLoaded) {
-              final cartItems = state.cartItems;
-              if (cartItems.isEmpty) {
-                return const Center(
-                  child: Text('No items in your cart!'),
-                );
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 16.0),
-                    ListView.separated(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: cartItems.length,
-                      itemBuilder: (context, index) {
-                        final cartItem = cartItems[index];
-                        return CartItemWidget(cartItem: cartItem);
-                      },
-                      separatorBuilder: (context, index) {
-                        return Divider(
-                          color: AppColors.grey2,
-                        );
-                      },
-                    ),
-                    Divider(
-                      color: AppColors.grey2,
-                    ),
-                    BlocBuilder<CartCubit, CartState>(
-                      bloc: cubit,
-                      buildWhen: (previous, current) =>
-                          current is SubtotalUpdated,
-                      builder: (context, subtotalState) {
-                        if (subtotalState is SubtotalUpdated) {
-                          return Column(
-                            children: [
-                              totalAndSubtotalWidget(context,
-                                  title: 'Subtotal',
-                                  amount: subtotalState.subtotal),
-                              totalAndSubtotalWidget(context,
-                                  title: 'Shipping', amount: 10),
-                              const SizedBox(height: 4.0),
-                              Dash(
-                                dashColor: AppColors.grey3,
-                                length: MediaQuery.of(context).size.width - 32,
-                              ),
-                              const SizedBox(height: 4.0),
-                              totalAndSubtotalWidget(
-                                context,
-                                title: 'Total Amount',
-                                amount: subtotalState.subtotal + 10,
-                              ),
-                            ],
-                          );
-                        }
-                        return Column(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Your Cart'),
+      ),
+      body: BlocConsumer<CartCubit, CartState>(
+        listener: (context, state) {
+          if (state is ProductAddedToCart) {
+            context.read<CartCubit>().getCartItems();
+          }
+        },
+        builder: (context, state) {
+          if (state is CartLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (state is CartError) {
+            return Center(child: Text('Error: ${state.message}'));
+          } else if (state is CartLoaded) {
+            if (state.cartItems.isEmpty) {
+              return const Center(child: Text('Your cart is empty.'));
+            }
+
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: state.cartItems.length,
+                    itemBuilder: (context, index) {
+                      final item = state.cartItems[index];
+                      return ListTile(
+                        leading: Image.network(item.product.imgUrl, width: 50),
+                        title: Text(item.product.name),
+                        subtitle: Text('Quantity: ${item.quantity}'),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            totalAndSubtotalWidget(context,
-                                title: 'Subtotal', amount: state.subtotal),
-                            totalAndSubtotalWidget(context,
-                                title: 'Shipping', amount: 10),
-                            const SizedBox(height: 4.0),
-                            Dash(
-                              dashColor: AppColors.grey3,
-                              length: MediaQuery.of(context).size.width - 32,
-                            ),
-                            const SizedBox(height: 4.0),
-                            totalAndSubtotalWidget(
-                              context,
-                              title: 'Total Amount',
-                              amount: state.subtotal + 10,
+                            Text('\$${item.product.price * item.quantity}'),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.red),
+                              onPressed: () {
+                                context
+                                    .read<CartCubit>()
+                                    .deleteItemFromCart(item);
+                              },
                             ),
                           ],
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 40.0),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 60,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Navigator.of(context, rootNavigator: true)
-                                .pushNamed(
-                              Routers.checkoutRoute,
-                              arguments: (state.subtotal + 10)
-                                  .toString(),
-                            );
-                          
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            foregroundColor: AppColors.white,
-                          ),
-                          child: const Text('Checkout'),
                         ),
-                      ),
-                    ),
-                  ],
+                      );
+                    },
+                  ),
                 ),
-              );
-            } else if (state is CartError) {
-              return Center(
-                child: Text(state.message),
-              );
-            } else {
-              return const Center(
-                child: Text('Something went wrong!'),
-              );
-            }
-          },
-        );
-      }),
-    );
-  }
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text('Subtotal:', style: TextStyle(fontSize: 16)),
+                      Text('\$${state.subtotal.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold)),
+                    ],
+                  ),
+                )
+              ],
+            );
+          }
 
-  Widget totalAndSubtotalWidget(context,
-      {required String title, required double amount}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            title,
-            style: Theme.of(context)
-                .textTheme
-                .titleMedium!
-                .copyWith(color: AppColors.grey),
-          ),
-          Text(
-            '\$${amount.toStringAsFixed(2)}',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-        ],
+          return const SizedBox.shrink(); // fallback
+        },
       ),
     );
   }

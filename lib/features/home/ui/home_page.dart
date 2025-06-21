@@ -96,7 +96,9 @@ class _HomePageState extends State<HomePage> {
           return Padding(
             padding: const EdgeInsetsDirectional.only(end: 16.0),
             child: InkWell(
-              onTap: () {},
+              onTap: () { // 4 - filter
+                context.read<HomeCubit>().filterProductsByCategory(category.id);
+              },
               child: Container(
                 width: size.width * 0.25,
                 decoration: BoxDecoration(
@@ -176,10 +178,9 @@ class _HomePageState extends State<HomePage> {
       itemBuilder: (context, index) {
         return InkWell(
           onTap: () {
-            Navigator.of(context,rootNavigator: true).pushNamed(
-              
+            Navigator.of(context, rootNavigator: true).pushNamed(
               Routers.productDetailsRoute,
-              arguments: FoodDetailsArgs(foodIndex: index),
+              arguments: FoodDetailsArgs(foodIndex: allFood[index].id),
             );
           },
           child: FoodGridItem(

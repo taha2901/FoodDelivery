@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/core/routings/routers.dart';
 import 'package:food_delivery/core/widgets/main_button.dart';
 import 'package:food_delivery/features/auth/logic/auth_cubit.dart';
 import 'package:food_delivery/features/auth/ui/login_page.dart';
+import 'package:food_delivery/features/profile/ui/widget/change_password.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -15,7 +17,7 @@ class ProfilePage extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(100),
         child: AppBar(
-          leading:  IconButton(
+          leading: IconButton(
             icon: const Icon(Iconsax.arrow_left),
             onPressed: () {
               Navigator.pop(context);
@@ -28,7 +30,7 @@ class ProfilePage extends StatelessWidget {
               height: 1.5,
             ),
           ),
-          title:const Center(child: const Text('Settings')),
+          title: const Center(child: const Text('Settings')),
           actions: [
             IconButton(
               icon: const Icon(Icons.more_vert),
@@ -54,12 +56,21 @@ class ProfilePage extends StatelessWidget {
               _buildSettingItem(
                   icon: Iconsax.profile_2user,
                   title: 'Edit Profile',
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed(Routers.userProfileRoute);
+                  }),
               const SizedBox(height: 10),
               _buildSettingItem(
                   icon: Iconsax.password_check4,
                   title: 'Change Password',
-                  onTap: () {}),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const ChangePasswordPage()),
+                    );
+                  }),
               const SizedBox(height: 10),
               _buildSettingItem(
                   icon: Iconsax.notification,

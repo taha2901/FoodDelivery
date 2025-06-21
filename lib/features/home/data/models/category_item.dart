@@ -1,24 +1,26 @@
 import 'dart:convert';
-import 'package:food_delivery/core/utilities/app_assets.dart';
 
 class CategoryItemModel {
   final String id;
   final String title;
   final String imgPath;
 
+
   CategoryItemModel({
     required this.id,
     required this.title,
     required this.imgPath,
+    
   });
 
   // fromMap
   factory CategoryItemModel.fromMap(Map<String, dynamic> map) {
     return CategoryItemModel(
-      id: map['id'] ?? '',
-      title: map['title'] ?? '',
-      imgPath: map['imgPath'] ?? '',
-    );
+        id: map['id'] ?? '',
+        title: map['title'] ?? '',
+        imgPath: map['imgPath'] ?? '',
+        
+        );
   }
 
   // toMap
@@ -27,7 +29,7 @@ class CategoryItemModel {
       'id': id,
       'title': title,
       'imgPath': imgPath,
-    };
+          };
   }
 
   // fromJson

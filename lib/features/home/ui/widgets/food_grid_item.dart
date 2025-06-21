@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/home/data/models/food_item.dart';
+import 'package:food_delivery/features/home/logic/home/home_cubit.dart';
 
 class FoodGridItem extends StatelessWidget {
   final int foodIndex;
@@ -12,8 +14,10 @@ class FoodGridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final targettedIndex = food.indexOf(filteredFood[foodIndex]);
-    final size = MediaQuery.of(context).size;
+    final homeCubit = BlocProvider.of<HomeCubit>(context);
+
+    // final targettedIndex = filteredFood.indexOf(filteredFood[foodIndex]);
+    // final size = MediaQuery.of(context).size;
     final textScaler = MediaQuery.textScalerOf(context);
     return Container(
       decoration: BoxDecoration(
@@ -26,20 +30,57 @@ class FoodGridItem extends StatelessWidget {
           return Column(
             children: [
               Stack(
-                alignment: Alignment.topCenter,
+                alignment: Alignment.topRight,
                 children: [
                   Image.network(
                     filteredFood[foodIndex].imgUrl,
                     height: constraints.maxHeight * 0.55,
                   ),
-                  // Align(
-                  //   alignment: Alignment.topRight,
-                  //   child: FavoriteButton(
-                  //     height: constraints.maxHeight * 0.1,
-                  //     width: constraints.maxWidth * 0.1,
-                  //     foodIndex: targettedIndex,
-                  //   ),
-                  // ),
+                  BlocBuilder<HomeCubit, HomeState>(
+                    bloc: homeCubit,
+                    buildWhen: (previous, current) =>
+                         (current is SetFavouriteFailure &&
+                          current.productId == filteredFood[foodIndex].id) ||
+                      (current is SetFavouriteLoading &&
+                          current.productId == filteredFood[foodIndex].id) ||
+                      (current is SetFavouriteSuccess &&
+                          current.productId == filteredFood[foodIndex].id),
+                    builder: (context, state) {
+                      if (state is SetFavouriteLoading) {
+                        return const CircularProgressIndicator.adaptive();
+                      } else if (state is SetFavouriteSuccess) {
+                        return state.isFav
+                            ? InkWell(
+                                onTap: () async => await homeCubit.setFavourite(
+                                    filteredFood[foodIndex], context),
+                                child: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () async => await homeCubit.setFavourite(
+                                    filteredFood[foodIndex], context),
+                                child: const Icon(
+                                  Icons.favorite_border,
+                                ),
+                              );
+                      }
+
+                      return InkWell(
+                        onTap: () async => await homeCubit.setFavourite(
+                            filteredFood[foodIndex], context),
+                        child: filteredFood[foodIndex].isFavorite
+                            ? const Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : const Icon(
+                                Icons.favorite_border,
+                              ),
+                      );
+                    },
+                  ),
                 ],
               ),
               SizedBox(height: constraints.maxHeight * 0.05),

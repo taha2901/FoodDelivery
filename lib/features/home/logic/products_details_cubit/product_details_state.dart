@@ -27,14 +27,14 @@ final class QuantityCounterLoaded extends ProductDetailsState {
 //   SizeSelected({required this.size});
 // }
 
-final class ProductAddedToCart extends ProductDetailsState {
-  final String productId;
-  ProductAddedToCart({required this.productId});
-}
+// final class ProductAddedToCart extends ProductDetailsState {
+//   final String productId;
+//   ProductAddedToCart({required this.productId});
+// }
 
-final class ProductAddingToCart extends ProductDetailsState {}
+// final class ProductAddingToCart extends ProductDetailsState {}
 
-final class ProductAddedToCartError extends ProductDetailsState {
-  final String message;
-  ProductAddedToCartError({required this.message});
-}
+// final class ProductAddedToCartError extends ProductDetailsState {
+//   final String message;
+//   ProductAddedToCartError({required this.message});
+// }

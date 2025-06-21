@@ -43,3 +43,15 @@ final class SubtotalUpdated extends CartState {
 
   const SubtotalUpdated(this.subtotal);
 }
+
+final class ProductAddedToCart extends CartState {
+  final String productId;
+  ProductAddedToCart({required this.productId});
+}
+
+final class ProductAddingToCart extends CartState {}
+
+final class ProductAddedToCartError extends CartState {
+  final String message;
+  ProductAddedToCartError({required this.message});
+}

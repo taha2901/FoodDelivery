@@ -8,4 +8,6 @@ class Routers {
   static const String chooseLocation = '/choose-location';
   static const String editProfileRoute = '/edit-profile';
   static const String checkoutPaymentRoute = '/checkout-payment';
+  static const String userProfileRoute = '/user-profile';
+  
 }

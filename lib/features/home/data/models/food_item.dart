@@ -5,8 +5,11 @@ class FoodItemModel {
   final String name;
   final String imgUrl;
   final double price;
-  final bool isFavorite;
+  bool isFavorite;
   final String categoryId;
+  final int calories;
+  final String size;
+  final String descreption;
 
   FoodItemModel({
     required this.id,
@@ -15,6 +18,9 @@ class FoodItemModel {
     required this.price,
     this.isFavorite = false,
     required this.categoryId,
+    required this.calories,
+    required this.size,
+    required this.descreption,
   });
 
   // ✅ copyWith
@@ -25,6 +31,9 @@ class FoodItemModel {
     double? price,
     bool? isFavorite,
     String? categoryId,
+    int? calories,
+    String? size,
+    String? descreption
   }) {
     return FoodItemModel(
       id: id ?? this.id,
@@ -33,6 +42,9 @@ class FoodItemModel {
       price: price ?? this.price,
       isFavorite: isFavorite ?? this.isFavorite,
       categoryId: categoryId ?? this.categoryId,
+      calories: calories ?? this.calories,
+      size: size ?? this.size,
+      descreption: descreption ?? this.descreption
     );
   }
 
@@ -45,6 +57,9 @@ class FoodItemModel {
       price: (map['price'] ?? 0).toDouble(),
       isFavorite: map['isFavorite'] ?? false,
       categoryId: map['categoryId'] ?? '',
+      calories: map['calories'] ?? '',
+        descreption: map['descreption'] ??'',
+        size: map['size'] ??'',
     );
   }
 
@@ -57,6 +72,9 @@ class FoodItemModel {
       'price': price,
       'isFavorite': isFavorite,
       'categoryId': categoryId,
+      'calories': calories,
+      'descreption':descreption,
+      'size':size,
     };
   }
 

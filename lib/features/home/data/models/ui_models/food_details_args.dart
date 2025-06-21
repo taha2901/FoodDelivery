@@ -1,4 +1,4 @@
 class FoodDetailsArgs {
-  final int foodIndex;
+  final String foodIndex;
   const FoodDetailsArgs({required this.foodIndex});
 }

@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/utilities/app_colors.dart';
+import 'package:food_delivery/features/cart/logic/cart/cart_cubit.dart';
+import 'package:food_delivery/features/cart/ui/cart_page.dart';
+import 'package:food_delivery/features/favourite/logic/cubit/favourite_cubit.dart';
+import 'package:food_delivery/features/favourite/ui/favourite_page.dart';
 import 'package:food_delivery/features/home/logic/home/home_cubit.dart';
 import 'package:food_delivery/features/home/ui/home_page.dart';
 import 'package:food_delivery/features/profile/ui/profile_page.dart';
@@ -33,8 +37,14 @@ class _CustomBottomNavbarState extends State<CustomBottomNavbar> {
           ..getCategoryData(),
         child: const HomePage(),
       ),
-      Container(),
-      Container(),
+      BlocProvider(
+        create: (context) => CartCubit()..getCartItems(),
+        child: const CartPage(),
+      ),
+      BlocProvider(
+        create: (context) => FavouriteCubit()..getFavoriteProducts(),
+        child: const FavoritesPage(),
+      ),
       const ProfilePage(),
     ];
   }

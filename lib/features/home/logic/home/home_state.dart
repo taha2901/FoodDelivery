@@ -9,10 +9,8 @@ final class HomeLoading extends HomeState {}
 
 final class HomeLoaded extends HomeState {
   final List<FoodItemModel> products;
-  // final List<HomeCarouselItemModel> carouselItems;
   HomeLoaded({
     required this.products,
-    // required this.carouselItems,
   });
 }
 

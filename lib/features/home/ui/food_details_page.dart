@@ -1,34 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/core/utilities/app_colors.dart';
 import 'package:food_delivery/core/widgets/loading_indicator.dart';
 import 'package:food_delivery/core/widgets/message_display.dart';
+import 'package:food_delivery/features/cart/logic/cart/cart_cubit.dart';
 import 'package:food_delivery/features/home/data/models/ui_models/food_details_args.dart';
 import 'package:food_delivery/features/home/logic/products_details_cubit/product_details_cubit.dart';
 import 'package:food_delivery/features/home/ui/widgets/custom_back_button.dart';
 import 'package:food_delivery/features/home/ui/widgets/food_details.dart/food_item_counter.dart';
 import 'package:food_delivery/features/home/ui/widgets/food_details.dart/property_item.dart';
 
-class FoodDetailsPage extends StatelessWidget {
-  final int foodIndex;
+class FoodDetailsPage extends StatefulWidget {
+  final String foodIndex;
   const FoodDetailsPage({super.key, required this.foodIndex});
 
-  
+  @override
+  State<FoodDetailsPage> createState() => _FoodDetailsPageState();
+}
 
+class _FoodDetailsPageState extends State<FoodDetailsPage> {
+  @override
+  void initState() {
+    BlocProvider.of<CartCubit>(context).getCartItems();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    final cartCubit = BlocProvider.of<CartCubit>(context);
     final size = MediaQuery.of(context).size;
-     final FoodDetailsArgs foodArgs =
+    final FoodDetailsArgs foodArgs =
         ModalRoute.of(context)!.settings.arguments as FoodDetailsArgs;
-    final int foodIndex = foodArgs.foodIndex;
+    final String foodIndex = foodArgs.foodIndex;
     return Scaffold(
       body: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
-          // TODO: implement listener
+          if (state is ProductDetailsError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
+          }
         },
         builder: (context, state) {
           if (state is ProductDetailsLoading) {
             return const LoadingIndicator();
           } else if (state is ProductDetailsError) {
+            debugPrint('ssssssssssssssss ${state.message}');
             return MessageDisplay(
               message: state.message,
             );
@@ -116,26 +132,27 @@ class FoodDetailsPage extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 32.0),
-                              const IntrinsicHeight(
+                              IntrinsicHeight(
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     PropertyItem(
                                         propertyName: 'Size',
-                                        propertyValue: 'Medium'),
-                                    VerticalDivider(
+                                        propertyValue: food.size),
+                                    const VerticalDivider(
                                       indent: 0,
                                       endIndent: 0,
                                     ),
                                     PropertyItem(
                                         propertyName: 'Calories',
-                                        propertyValue: '150 Kcal'),
-                                    VerticalDivider(
+                                        propertyValue:
+                                            food.calories.toString()),
+                                    const VerticalDivider(
                                       indent: 0,
                                       endIndent: 0,
                                     ),
-                                    PropertyItem(
+                                    const PropertyItem(
                                         propertyName: 'Cooking',
                                         propertyValue: '10-20 Min'),
                                   ],
@@ -143,7 +160,7 @@ class FoodDetailsPage extends StatelessWidget {
                               ),
                               const SizedBox(height: 16.0),
                               Text(
-                                'Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem',
+                                food.descreption,
                                 style: Theme.of(context)
                                     .textTheme
                                     .bodyMedium!
@@ -176,9 +193,35 @@ class FoodDetailsPage extends StatelessWidget {
                         Expanded(
                           child: SizedBox(
                             height: size.height * 0.058,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              child: const Text('Checkout'),
+                            child: BlocBuilder<CartCubit, CartState>(
+                              bloc: cartCubit,
+                              buildWhen: (previous, current) =>
+                                  current is ProductAddedToCart ||
+                                  current is ProductAddingToCart,
+                              builder: (context, state) {
+                                if (state is ProductAddingToCart) {
+                                  return ElevatedButton(
+                                    onPressed: null,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
+                                    ),
+                                    child: const CircularProgressIndicator
+                                        .adaptive(),
+                                  );
+                                }
+                        
+                                if (state is ProductAddedToCart) {
+                                  debugPrint(
+                                      "Product added to cart successfully");
+                                }
+                                return ElevatedButton(
+                                  onPressed: () {
+                                    cartCubit.addToCart(food.id, context);
+                                  },
+                                  child: const Text('Checkout'),
+                                );
+                              },
                             ),
                           ),
                         ),
@@ -189,7 +232,6 @@ class FoodDetailsPage extends StatelessWidget {
               ),
             );
           } else {
-            // تغطية لأي حالة تانية (زي ProductDetailsInitial)
             return const SizedBox.shrink();
           }
         },
