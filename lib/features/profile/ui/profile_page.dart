@@ -24,9 +24,9 @@ class ProfilePage extends StatelessWidget {
             },
           ),
           bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.5), // ارتفاع الخط
+            preferredSize: const Size.fromHeight(1.5), 
             child: Container(
-              color: Colors.grey.shade300, // لون الخط
+              color: Colors.grey.shade300, 
               height: 1.5,
             ),
           ),
@@ -173,7 +173,7 @@ class ProfilePage extends StatelessWidget {
               const Spacer(),
               title.toLowerCase() != 'logout'
                   ? const Icon(Icons.arrow_forward_ios, size: 16)
-                  : const SizedBox(), // إخفاء الأيقونة إذا كان العنوان "logout"
+                  : const SizedBox(), 
             ],
           ),
         ),

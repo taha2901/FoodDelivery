@@ -61,13 +61,6 @@ class AppRouter {
           builder: (_) => const UserProfilePage(),
           settings: settings,
         );
-
-      // case Routers.checkoutPaymentRoute:
-      //   return MaterialPageRoute(
-      //     builder: (_) => const MyCartView(),
-      //     settings: settings,
-      //   );
-
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -10,7 +10,7 @@ class UserServices {
     final uid = FirebaseAuth.instance.currentUser!.uid;
     return await _firestoreServices.getDocument<UserData>(
       path: ApiPaths.users(uid),
-      builder: (data, id) => UserData.fromMap(data),
+      builder: (data, id) => UserData.fromMap(data, id),
     );
   }
 

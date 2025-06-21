@@ -4,9 +4,7 @@ import 'package:food_delivery/core/utilities/app_colors.dart';
 import 'package:food_delivery/core/widgets/loading_indicator.dart';
 import 'package:food_delivery/core/widgets/message_display.dart';
 import 'package:food_delivery/features/cart/logic/cart/cart_cubit.dart';
-import 'package:food_delivery/features/home/data/models/ui_models/food_details_args.dart';
 import 'package:food_delivery/features/home/logic/products_details_cubit/product_details_cubit.dart';
-import 'package:food_delivery/features/home/ui/widgets/custom_back_button.dart';
 import 'package:food_delivery/features/home/ui/widgets/food_details.dart/food_item_counter.dart';
 import 'package:food_delivery/features/home/ui/widgets/food_details.dart/property_item.dart';
 
@@ -28,9 +26,6 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
   Widget build(BuildContext context) {
     final cartCubit = BlocProvider.of<CartCubit>(context);
     final size = MediaQuery.of(context).size;
-    final FoodDetailsArgs foodArgs =
-        ModalRoute.of(context)!.settings.arguments as FoodDetailsArgs;
-    final String foodIndex = foodArgs.foodIndex;
     return Scaffold(
       body: BlocConsumer<ProductDetailsCubit, ProductDetailsState>(
         listener: (context, state) {
@@ -61,12 +56,9 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
                         SliverAppBar(
                           leading: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: CustomBackButton(
-                              onTap: () =>
-                                  Navigator.of(context).pop<String>(food.name),
-                              width: size.width * 0.09,
-                              height: size.height * 0.04,
-                            ),
+                            child: IconButton(onPressed: (){
+                              Navigator.of(context).pop();
+                            }, icon: const Icon(Icons.arrow_back_ios)),
                           ),
                           expandedHeight: size.height * 0.35,
                           pinned: true,

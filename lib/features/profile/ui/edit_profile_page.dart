@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/ui/widget/label_with_text_field.dart';
-import 'package:food_delivery/features/profile/logic/user_cubit.dart';
-import 'package:food_delivery/features/profile/logic/user_states.dart';
+import 'package:food_delivery/features/profile/logic/user_cubit/user_cubit.dart';
+import 'package:food_delivery/features/profile/logic/user_cubit/user_states.dart';
 import 'package:food_delivery/features/auth/data/user_data.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -46,59 +46,61 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(children: [
-            const SizedBox(height: 20),
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(
-                  'https://marketplace.canva.com/EAFMdLQAxDU/1/0/1600w/canva-white-and-gray-modern-real-estate-modern-home-banner-NpQukS8X1oo.jpg'),
-            ),
-            const SizedBox(height: 30),
-            LabelWithTextField(
-              label: 'Username',
-              controller: usernameController,
-              prefixIcon: Iconsax.profile_2user,
-              hintText: 'Enter your name',
-            ),
-            const SizedBox(height: 10),
-            LabelWithTextField(
-              label: 'Email',
-              controller: emailController,
-              prefixIcon: Iconsax.direct,
-              hintText: 'Enter your email',
-            ),
-            const SizedBox(height: 30),
-            BlocConsumer<UserCubit, UserState>(
-              listener: (context, state) {
-                if (state is UserUpdated) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('تم تحديث البيانات بنجاح')));
-                  Navigator.pop(context);
-                } else if (state is UserError) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(state.message)));
-                }
-              },
-              builder: (context, state) {
-                final isLoading = state is UserUpdating;
-                return ElevatedButton.icon(
-                  onPressed: isLoading
-                      ? null
-                      : () {
-                          final updatedUser = UserData(
-                            id: widget.user.id,
-                            username: usernameController.text,
-                            email: emailController.text,
-                            createdAt: widget.user.createdAt,
-                          );
-                          context.read<UserCubit>().updateUser(updatedUser);
-                        },
-                  icon: const Icon(Icons.save),
-                  label: Text(isLoading ? 'جاري الحفظ...' : 'حفظ التغييرات'),
-                );
-              },
-            )
-          ]),
+          child: SingleChildScrollView(
+            child: Column(children: [
+              const SizedBox(height: 20),
+              const CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(
+                    'https://marketplace.canva.com/EAFMdLQAxDU/1/0/1600w/canva-white-and-gray-modern-real-estate-modern-home-banner-NpQukS8X1oo.jpg'),
+              ),
+              const SizedBox(height: 30),
+              LabelWithTextField(
+                label: 'Username',
+                controller: usernameController,
+                prefixIcon: Iconsax.profile_2user,
+                hintText: 'Enter your name',
+              ),
+              const SizedBox(height: 10),
+              LabelWithTextField(
+                label: 'Email',
+                controller: emailController,
+                prefixIcon: Iconsax.direct,
+                hintText: 'Enter your email',
+              ),
+              const SizedBox(height: 30),
+              BlocConsumer<UserCubit, UserState>(
+                listener: (context, state) {
+                  if (state is UserUpdated) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('تم تحديث البيانات بنجاح')));
+                    Navigator.pop(context);
+                  } else if (state is UserError) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(state.message)));
+                  }
+                },
+                builder: (context, state) {
+                  final isLoading = state is UserUpdating;
+                  return ElevatedButton.icon(
+                    onPressed: isLoading
+                        ? null
+                        : () {
+                            final updatedUser = UserData(
+                              id: widget.user.id,
+                              username: usernameController.text,
+                              email: emailController.text,
+                              createdAt: widget.user.createdAt,
+                            );
+                            context.read<UserCubit>().updateUser(updatedUser);
+                          },
+                    icon: const Icon(Icons.save),
+                    label: Text(isLoading ? 'جاري الحفظ...' : 'حفظ التغييرات'),
+                  );
+                },
+              )
+            ]),
+          ),
         ),
       ),
     );

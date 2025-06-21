@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/features/profile/logic/user_cubit.dart';
-import 'package:food_delivery/features/profile/logic/user_states.dart';
+import 'package:food_delivery/features/profile/logic/user_cubit/user_cubit.dart';
+import 'package:food_delivery/features/profile/logic/user_cubit/user_states.dart';
 import 'package:food_delivery/features/profile/ui/edit_profile_page.dart';
 
 class UserProfilePage extends StatelessWidget {

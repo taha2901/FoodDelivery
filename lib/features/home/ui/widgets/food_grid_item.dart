@@ -39,45 +39,59 @@ class FoodGridItem extends StatelessWidget {
                   BlocBuilder<HomeCubit, HomeState>(
                     bloc: homeCubit,
                     buildWhen: (previous, current) =>
-                         (current is SetFavouriteFailure &&
-                          current.productId == filteredFood[foodIndex].id) ||
-                      (current is SetFavouriteLoading &&
-                          current.productId == filteredFood[foodIndex].id) ||
-                      (current is SetFavouriteSuccess &&
-                          current.productId == filteredFood[foodIndex].id),
+                        (current is SetFavouriteFailure &&
+                            current.productId == filteredFood[foodIndex].id) ||
+                        (current is SetFavouriteLoading &&
+                            current.productId == filteredFood[foodIndex].id) ||
+                        (current is SetFavouriteSuccess &&
+                            current.productId == filteredFood[foodIndex].id),
                     builder: (context, state) {
                       if (state is SetFavouriteLoading) {
                         return const CircularProgressIndicator.adaptive();
                       } else if (state is SetFavouriteSuccess) {
                         return state.isFav
-                            ? InkWell(
-                                onTap: () async => await homeCubit.setFavourite(
-                                    filteredFood[foodIndex], context),
-                                child: const Icon(
-                                  Icons.favorite,
-                                  color: Colors.red,
+                            ? Positioned(
+                                height: 10,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () async =>
+                                      await homeCubit.setFavourite(
+                                          filteredFood[foodIndex], context),
+                                  child: const Icon(
+                                    Icons.favorite,
+                                    color: Colors.red,
+                                  ),
                                 ),
                               )
-                            : InkWell(
-                                onTap: () async => await homeCubit.setFavourite(
-                                    filteredFood[foodIndex], context),
-                                child: const Icon(
-                                  Icons.favorite_border,
+                            : Positioned(
+                                height: 10,
+                                right: 0,
+                                child: InkWell(
+                                  onTap: () async =>
+                                      await homeCubit.setFavourite(
+                                          filteredFood[foodIndex], context),
+                                  child: const Icon(
+                                    Icons.favorite_border,
+                                  ),
                                 ),
                               );
                       }
 
-                      return InkWell(
-                        onTap: () async => await homeCubit.setFavourite(
-                            filteredFood[foodIndex], context),
-                        child: filteredFood[foodIndex].isFavorite
-                            ? const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              )
-                            : const Icon(
-                                Icons.favorite_border,
-                              ),
+                      return Positioned(
+                        height: 10,
+                        right: 0,
+                        child: InkWell(
+                          onTap: () async => await homeCubit.setFavourite(
+                              filteredFood[foodIndex], context),
+                          child: filteredFood[foodIndex].isFavorite
+                              ? const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                )
+                              : const Icon(
+                                  Icons.favorite_border,
+                                ),
+                        ),
                       );
                     },
                   ),

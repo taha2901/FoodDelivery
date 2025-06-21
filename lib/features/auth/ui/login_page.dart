@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/utilities/app_colors.dart';
@@ -107,6 +108,7 @@ class _LoginPageState extends State<LoginPage> {
                           if (_formKey.currentState!.validate()) {
                             await cubit.loginWithEmailAndPassword(
                               emailController.text,
+                              // FirebaseAuth.instance.currentUser!.email.toString(),
                               passwordController.text,
                             );
                           }

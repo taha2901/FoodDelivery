@@ -1,9 +1,7 @@
-
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/core/services/user_services.dart';
 import 'package:food_delivery/features/auth/data/user_data.dart';
-import 'package:food_delivery/features/profile/logic/user_states.dart';
+import 'package:food_delivery/features/profile/logic/user_cubit/user_states.dart';
 
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitial());
@@ -25,7 +23,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       await _userServices.updateUserData(userData);
       emit(UserUpdated());
-      getUserData(); // حمل البيانات من جديد
+      getUserData(); 
     } catch (e) {
       emit(UserError('فشل في التحديث: $e'));
     }
